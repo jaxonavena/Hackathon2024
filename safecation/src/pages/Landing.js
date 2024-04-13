@@ -265,7 +265,7 @@ const getZipCodesForSquares = async (coords) => {
             lat={latitude} lon={longitude} />
         </Container>
       <div>
-        <Disease requestData={"01001"}/>
+        <Disease requestData={zipCode}/>
       </div>
     </Container>
   );

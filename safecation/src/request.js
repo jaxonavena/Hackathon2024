@@ -14,6 +14,7 @@ function Disease({ requestData }) {
       });
       const jsonData = await response.json();
       setResponseData(jsonData);
+      console.log('data: ', JSON.stringify(responseData, null, 2))
     } catch (error) {
       console.error('Error fetching data:', error);
     }
