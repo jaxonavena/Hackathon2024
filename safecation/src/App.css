@@ -36,3 +36,40 @@
     transform: rotate(360deg);
   }
 }
+
+/* Set background color */
+body {
+  background-image: url('../../widepolka.png');
+  background-color: (71, 86, 87, 0.8); /* Dark gray #475657*/
+  background-repeat: repeat; /* Repeat the texture */
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Header styles */
+.header {
+  background-color: #4A6D7C; /*Dark blue */
+  color: #DAD6D6; /* Light gray */
+  padding: 20px;
+  text-align: center;
+}
+
+/* Main content container */
+.container {
+  background-color: #1e2e1e; /* Dark green */
+  padding: 25px;
+  margin: 20px auto;
+  max-width: 1000px;
+}
+
+.map-div {
+  background-color: #92BFB1; /* Light green */
+  color: #DAD6D6; /* Light gray */
+  padding: 20px;
+  text-align: center;
+}
+
+.search-bar {
+  margin: 10px;
+}
