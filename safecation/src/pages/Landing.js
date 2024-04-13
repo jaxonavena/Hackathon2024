@@ -3,6 +3,9 @@ import { useLocation } from 'react-router-dom';
 import { Col, Container, Row, Input, Button } from 'reactstrap';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+// import "./Landing.css"
+
+
 
 
 
@@ -32,7 +35,7 @@ export default function Landing() {
       if (!mapContainer) {
         return;
       }
-  
+
       // Check if the map has already been initialized
       if (mapContainer._leaflet_id) {
         return;
@@ -47,7 +50,7 @@ export default function Landing() {
       }).addTo(map);
     }, []);
   
-    return <div id="leaflet-map" style={{ height: '400px' }}></div>;
+    return <div id="leaflet-map" style={{ height: '450px' }}></div>;
   };
 
   const handleAddress = async () => {
@@ -78,19 +81,23 @@ export default function Landing() {
   }
 
   return (
-    <Container>
-      <h1>Safecation</h1>
-      <div>
-        <Input type="text" 
-          placeholder="Enter address" 
-          autoFocus
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        />
+    <Container className="landing-container">
+      <h1 className="header">Safecation</h1>
+      <div className="map-div">
+        <Input className="search-bar" type="text" placeholder="Enter address" autoFocus value={address} onChange={(e) => setAddress(e.target.value)}/>
         <Button onClick={handleAddress}>Enter</Button>
+        <Button onClick={handleAddress}>Enter</Button>
+
         {/* Render LeafletMap component */}
         <LeafletMap lat={latitude} lon={longitude} />
       </div>
     </Container>
   );
 }
+
+
+// DAD6D6
+// 92BFB1
+// 4A6D7C
+// 001400
+// 475657
