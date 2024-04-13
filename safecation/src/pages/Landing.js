@@ -4,11 +4,7 @@ import { Col, Container, Row, Input, Button } from 'reactstrap';
 import L from 'leaflet';
 import Header from '../components/Header';
 import 'leaflet/dist/leaflet.css';
-// import "./Landing.css"
-
-
-
-
+import Disease from '../request';
 
 
 // Define TextInput component
@@ -284,6 +280,9 @@ const getZipCodesForSquares = async (coords) => {
 
         {/* Render LeafletMap component */}
         <LeafletMap lat={latitude} lon={longitude} />
+      </div>
+      <div>
+        <Disease requestData={"01001"}/>
       </div>
     </Container>
   );

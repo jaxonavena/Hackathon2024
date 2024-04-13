@@ -1,7 +1,6 @@
 // import logo from './logo.svg';
-import React from "react";
+import React, { useEffect } from "react";
 import Landing from "./pages/Landing"
-
 import './App.css';
 import { Routes, Route, Link, Router, BrowserRouter } from "react-router-dom";
 
@@ -14,6 +13,7 @@ function App() {
           <Route index path="/" element={<Landing />} />
         </Routes>
       </BrowserRouter>
+      
     </div>
   );
 }
