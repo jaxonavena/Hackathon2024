@@ -7,7 +7,7 @@ export default function Landing() {
     const { pathname } = location;
     return(
        <Container>
-        <h1>Welcome to Kinder.</h1>
-       </Container>     
+        <h1>Safecation</h1>
+       </Container>
     )
 }
