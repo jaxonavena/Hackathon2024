@@ -32,21 +32,21 @@ export default function Landing() {
       if (!mapContainer) {
         return;
       }
-  
+
       // Check if the map has already been initialized
       if (mapContainer._leaflet_id) {
         return;
       }
-  
+
       // Create a Leaflet map
-      const map = L.map(mapContainer).setView([lat, lon], 13);
-  
+      const map = L.map(mapContainer).setView([lat, lon], 18);
+
       // Add a tile layer (e.g., OpenStreetMap)
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
     }, []);
-  
+
     return <div id="leaflet-map" style={{ height: '400px' }}></div>;
   };
 
@@ -81,8 +81,8 @@ export default function Landing() {
     <Container>
       <h1>Safecation</h1>
       <div>
-        <Input type="text" 
-          placeholder="Enter address" 
+        <Input type="text"
+          placeholder="Enter address"
           autoFocus
           value={address}
           onChange={(e) => setAddress(e.target.value)}
