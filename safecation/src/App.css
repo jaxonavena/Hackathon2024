@@ -47,13 +47,21 @@ body {
   font-family: Arial, sans-serif;
 }
 
-/* Header styles */
 .header {
-  background-color: #4A6D7C; /*Dark blue */
+  background-color: #4A6D7C; /* Dark blue */
   color: #DAD6D6; /* Light gray */
   padding: 20px;
   text-align: center;
+
+  /* Add background image */
+  background-image: url('../../logo.png');
+  background-repeat: no-repeat; /* Prevent the background image from repeating */
+  background-position: left center; /* Position the background image to the left of the content */
+  background-size: auto 80%; /* Adjust the size of the background image */
 }
+
+
+
 
 /* Main content container */
 .container {
