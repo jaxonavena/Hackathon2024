@@ -7,6 +7,9 @@ import 'leaflet/dist/leaflet.css';
 
 
 
+
+
+
 // Define TextInput component
 const TextInput = () => {
   return (
@@ -37,17 +40,17 @@ export default function Landing() {
       if (mapContainer._leaflet_id) {
         return;
       }
-
+  
       // Create a Leaflet map
-      const map = L.map(mapContainer).setView([lat, lon], 18);
-
+      const map = L.map(mapContainer).setView([lat, lon], 13);
+  
       // Add a tile layer (e.g., OpenStreetMap)
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
     }, []);
-
-    return <div id="leaflet-map" style={{ height: '400px' }}></div>;
+  
+    return <div id="leaflet-map" style={{ height: '450px' }}></div>;
   };
 
   const handleAddress = async () => {
@@ -82,6 +85,7 @@ export default function Landing() {
       <h1 className="header">Safecation</h1>
       <div className="map-div">
         <Input className="search-bar" type="text" placeholder="Enter address" autoFocus value={address} onChange={(e) => setAddress(e.target.value)}/>
+        <Button onClick={handleAddress}>Enter</Button>
         <Button onClick={handleAddress}>Enter</Button>
 
         {/* Render LeafletMap component */}
