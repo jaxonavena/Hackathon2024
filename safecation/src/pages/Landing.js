@@ -3,8 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Col, Container, Row, Input, Button } from 'reactstrap';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-
-
+import Disease from '../request';
 
 
 // Define TextInput component
@@ -90,6 +89,9 @@ export default function Landing() {
         <Button onClick={handleAddress}>Enter</Button>
         {/* Render LeafletMap component */}
         <LeafletMap lat={latitude} lon={longitude} />
+      </div>
+      <div>
+        <Disease requestData={"01001"}/>
       </div>
     </Container>
   );
