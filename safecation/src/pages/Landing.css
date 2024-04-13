@@ -1,0 +1,25 @@
+/* Landing.css */
+
+.landing-container {
+  text-align: center;
+}
+
+.landing-title {
+  margin-top: 50px;
+  margin-bottom: 30px;
+  font-size: 2.5rem;
+}
+
+.input-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.address-input {
+  width: 300px;
+}
+
+.enter-button {
+  margin-left: 10px;
+}
