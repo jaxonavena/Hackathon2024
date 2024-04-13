@@ -39,8 +39,8 @@
 
 /* Set background color */
 body {
-  background-image: url('../../widepolka.png');
-  background-color: (71, 86, 87, 0.8); /* Dark gray #475657*/
+  /* background-image: url('../../widepolka.png'); */
+  background-color: rgba(71, 86, 87); /* Dark gray #475657*/
   background-repeat: repeat; /* Repeat the texture */
   margin: 0;
   padding: 0;
