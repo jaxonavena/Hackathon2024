@@ -4,7 +4,8 @@ import { Col, Container, Row, Input, Button } from 'reactstrap';
 import L from 'leaflet';
 import Header from '../components/Header';
 import 'leaflet/dist/leaflet.css';
-// import "./Landing.css"
+import Disease from '../request';
+
 
 
 
@@ -256,12 +257,16 @@ const getZipCodesForSquares = async (coords) => {
           value={address} onChange={(e) => setAddress(e.target.value)}/>
         <Button onClick={handleAddress}>Enter</Button>
       </div>
+
         {/* Render LeafletMap component */}
         {/* <br></br> */}
         <Container className="w-75 align-items-start" >
           <LeafletMap 
             lat={latitude} lon={longitude} />
         </Container>
+      <div>
+        <Disease requestData={"01001"}/>
+      </div>
     </Container>
   );
 }
