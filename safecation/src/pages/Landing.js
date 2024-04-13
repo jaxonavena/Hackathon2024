@@ -8,25 +8,10 @@ import 'leaflet/dist/leaflet.css';
 
 
 
-
-
-
-// Define TextInput component
-const TextInput = () => {
-  return (
-    <div>
-      <label htmlFor="textInput">Enter Address:</label>
-      <input type="text" id="textInput" />
-    </div>
-  );
-};
-
-
-
 export default function Landing() {
   const [address, setAddress] = useState("");
-  const [latitude, setLatitude] = useState(30);
-  const [longitude, setLongitude] = useState(-90.11);
+  const [latitude, setLatitude] = useState(38.94);
+  const [longitude, setLongitude] = useState(-95.2678);
   const [zipCode, setZip] = useState(null);
   const [error, setError] = useState(null);
 
@@ -64,44 +49,65 @@ export default function Landing() {
         popupAnchor: [0, -32] // point from which the popup should open relative to the iconAnchor
       });
 
-      var centerLatLng = L.latLng(lat, lon);
+      var latLng = L.latLng(lat, lon);
 
 // Calculate the half-side length (in degrees) for a 4 km region
-      var halfSideInDegrees = 0.2;
+      var halfSideInDegrees = 0.1;
 
       // Compute the bounds for the square
-      var newsouthWest = L.latLng(centerLatLng.lat - halfSideInDegrees, centerLatLng.lng - halfSideInDegrees);
-      var tempnorthEast = L.latLng(centerLatLng.lat + halfSideInDegrees, centerLatLng.lng + halfSideInDegrees);
+      var newsouthWest = L.latLng(latLng.lat - halfSideInDegrees, latLng.lng - halfSideInDegrees);
+      var tempnorthEast = L.latLng(latLng.lat + halfSideInDegrees, latLng.lng + halfSideInDegrees);
       var tempbounds = L.latLngBounds(newsouthWest, tempnorthEast);
 
       // Create a rectangle (square) using the bounds
-     L.rectangle(tempbounds, { color: 'red', fillOpacity: 0.1 }).addTo(map);
-     var smallerSideInDegrees = 0.05;
+    //  L.rectangle(tempbounds, { color: 'red', fillOpacity: 0.1 }).addTo(map);
+     var smallerSideInDegrees = 0.025;
       let coords = [];
 // Create a 40x40 grid of smaller squares
-    for (var i = 0; i < 10; i++) {
-        for (var j = 0; j < 10; j++) {
-            var swLat = newsouthWest.lat + i * smallerSideInDegrees;
-            var swLng = newsouthWest.lng + j * smallerSideInDegrees;
-            var neLat = swLat + smallerSideInDegrees;
-            var neLng = swLng + smallerSideInDegrees;
+const dummyData = [
+  { value: 25 },
+  { value: 22 },
+  { value: 20 },
+  { value: 15 },
+  { value: 12 },
+  { value: 10 },
+  { value: 8 },
+  { value: 5 },
+  { value: 2 },
+  { value: 0 },
+  // Add more dummy data objects as needed
+];
+const assignColorsToSquares = (lat, lng) => {
+  const colors = [];
+  coords.forEach((coordString, index) => {
+    const [tempLat, tempLng] = coordString.split(',').map(parseFloat);
+    const dataValue = dummyData[index % dummyData.length].value; // Get corresponding dummy data value
+    const color = getColor(dataValue); // Get color based on dummy data value
+    colors.push(color); // Store color for each square
+  });
+  return colors;
+};
 
-          // console.log(swLat, swLng, neLat ,neLng);
-            var tempLat = (swLat + neLat) / 2;
-            var tempLng = (swLng + neLng) / 2;
+// Inside your loop:
+for (var i = 0; i < 10; i++) {
+  for (var j = 0; j < 10; j++) {
+    var swLat = lat + (i - 5) * smallerSideInDegrees;
+    var swLng = lon + (j - 5) * smallerSideInDegrees;
+    var neLat = swLat + smallerSideInDegrees;
+    var neLng = swLng + smallerSideInDegrees;
 
-            coords.push(`${tempLat},${tempLng}`);
+    var tempLat = (swLat + neLat) / 2;
+    var tempLng = (swLng + neLng) / 2;
 
-            var smallerBounds = L.latLngBounds(L.latLng(swLat, swLng), L.latLng(neLat, neLng));
-            // var zipCode =  handleZip(latitude, longitude)
-            var color = getColor(zipCode);
-            L.rectangle(smallerBounds, { color: 'green', fillOpacity: 0.3 }).addTo(map);
-        }
+    coords.push(`${tempLat},${tempLng}`);
+
+    var smallerBounds = L.latLngBounds(L.latLng(swLat, swLng), L.latLng(neLat, neLng));
+    var color = assignColorsToSquares(tempLat, tempLng)[i * 10 + j]; // Get color for current square
+    L.rectangle(smallerBounds, { color: color, fillOpacity: 0.5 }).addTo(map);
+  }
 }
-console.log(coords[0]);
-// console.log(coords);
-// const zipCodes = [];
-// Assuming you have an array of square coordinates called `squareCoordinatesArray`
+
+
 
 const getZipCodesForSquares = async (coords) => {
   try {
@@ -117,47 +123,9 @@ const getZipCodesForSquares = async (coords) => {
   }
 }
 
-
-// Call the function with your array of square coordinates
-// getZipCodesForSquares(coords);
-
-
-  //   var centerCoordinates = smallerBounds.map(function(bounds) {
-  //     var lat = (bounds.getNorth() + bounds.getSouth()) / 2;
-  //     var lng = (bounds.getEast() + bounds.getWest()) / 2;
-  //     return L.latLng(lat, lng);
-  //   });
-
-  //   centerCoordinates.forEach(function(center) {
-  //     var zipCode = getZipCodeForCoordinate(center.lat, center.lng);
-  //     var color = getColor(zipCode); // Define your color mapping logic
-  //     L.rectangle(smallerBounds, { color: color, fillOpacity: 0.3 }).addTo(map);
-  // });
   //   // FIXME: not working
-    // L.marker([lat, lon], {icon: mapMarker }).addTo(map).bindPopup('Your pin');
-      //   let dummy_data = {
-      //     'Obesity': 36.1,
-      //     'drinking': 4.1,
-
-      //   }
-
-        var square1 = [
-          [30.5, -90.1],
-          [30.5, -90.05],
-          [30.55, -90.05],
-          [30.55, -90.1]
-      ];
-
-      var square2 = [
-          [30.575, -90.1],
-          [30.575, -90.075],
-          [30.6, -90.075],
-          [30.6, -90.1]
-      ];
-
-      // // Create polygon layers for each square and add them to the map
-      L.polygon(square1, {color: 'red'}).addTo(map);
-      L.polygon(square2, {color: 'blue'}).addTo(map);
+    L.marker([lat, lon], {icon: mapMarker }).addTo(map).bindPopup('Your pin');
+   
     //   const geojsonLayer = L.geoJSON(FeatureCollection, {
     //     // Define style for each square
     //     style: function (feature) {
@@ -193,18 +161,21 @@ const getZipCodesForSquares = async (coords) => {
 
     // // Function to assign colors based on values
     function getColor(value) {
-        // return value > 15 ? '#800026' :
-        //        value > 10 ? '#BD0026' :
-        //        value > 5 ? '#E31A1C' :
-        //        value > 0 ? '#FC4E2A' :
-        //                    '#FFEDA0';
-        const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF']
+        return value > 20 ? '#AA0000' :
+               value > 15 ? '#D60000' :
+               value > 10 ? '#FF0000' :
+               value > 5 ? '#FF2C2C' :
+               value > 0 ? '#FF5353' :
+                           '#FF7979';
+        // const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF']
 
-        let index = value % colors.length
+        // let index = value % colors.length
     
-        return colors[index]
+        // return colors[index]
       }
-
+      
+    
+      // assignColorsToSquares();
     // Create a GeoJSON layer with custom styles and add it to the map
     // L.geoJSON(geojsonFeature, {
     //     style: style
@@ -215,7 +186,7 @@ const getZipCodesForSquares = async (coords) => {
       }).addTo(map);
     }, []);
   
-    return <div id="leaflet-map" style={{ height: '450px' }}></div>;
+    return <div id="leaflet-map" style={{ height: '50vh' }}></div>;
   };
   const handleZip = async (latitude, longitude) => {
     try {
@@ -248,7 +219,7 @@ const getZipCodesForSquares = async (coords) => {
       const response = await fetch(`https://trueway-geocoding.p.rapidapi.com/Geocode?address=${address}&language=en`, {
         method: 'GET',
         headers: {
-          'X-RapidAPI-Key': '01836c3714msh582bac2093a6a03p19e6abjsn2b918034e4c0',
+          'X-RapidAPI-Key': 'abb6831505msh0c50a361893b679p152f46jsn439e4eba5ca4',
           'X-RapidAPI-Host': 'trueway-geocoding.p.rapidapi.com'
         }
       });
@@ -275,16 +246,22 @@ const getZipCodesForSquares = async (coords) => {
   }
 
   return (
-    <Container className="landing-container">
-      <h1 className="header">Safecation</h1>
-      <div className="map-div">
-        <Input className="search-bar" type="text" placeholder="Enter address" autoFocus value={address} onChange={(e) => setAddress(e.target.value)}/>
+<Container className="landing-container bg-dark vh-100 p-4" fluid>
+      <h1 className="header mh-25">Safecation</h1>
+      <div className="d-flex map-div align-items-center justify-content-center">
+        <Input className="d-flex search-bar w-50"
+         type="text"
+          placeholder="Enter address"
+          autoFocus 
+          value={address} onChange={(e) => setAddress(e.target.value)}/>
         <Button onClick={handleAddress}>Enter</Button>
-        <Button onClick={handleAddress}>Enter</Button>
-
-        {/* Render LeafletMap component */}
-        <LeafletMap lat={latitude} lon={longitude} />
       </div>
+        {/* Render LeafletMap component */}
+        {/* <br></br> */}
+        <Container className="w-75 align-items-start" >
+          <LeafletMap 
+            lat={latitude} lon={longitude} />
+        </Container>
     </Container>
   );
 }
