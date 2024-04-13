@@ -134,33 +134,56 @@ export default function Landing() {
   useEffect(() => {
     if (zipcode && zipcode !== 12345) {
       console.log("grabing crime data")
-      // getCrime();
+      getCrime();
     }
     }, [zipcode]);
   // console.log("zip: ", zipcode)
 
   const getCrime = async () => {
 
-
+ 
     try {
 
       const response = await fetch(`https://crime-data-by-zipcode-api.p.rapidapi.com/crime_data?zip=${zipcode}`,  {     
       method: 'GET',
       headers: {
-        'X-RapidAPI-Key': 'abb6831505msh0c50a361893b679p152f46jsn439e4eba5ca4',
+        'X-RapidAPI-Key': '01836c3714msh582bac2093a6a03p19e6abjsn2b918034e4c0',
         'X-RapidAPI-Host': 'crime-data-by-zipcode-api.p.rapidapi.com'
       }
       });
 
       const data = await response.json();
+
       const breakdownList = [];
       // console.log(data);
 
       // Iterate over the Crime Breakdown array
+      const overallData = data['Overall'];
+
+      Object.entries(overallData).forEach(([key, value]) => {
+        const categoryString = `${key}: ${value}`;
+        breakdownList.push(categoryString);
+      });
+      
       data['Crime BreakDown'].forEach(crimeCategory => {
+        Object.entries(crimeCategory).forEach(([key,value]) => {
+          
+         
+          if (key != "0"){
+          const categoryString = `${key}: ${Object.entries(value).map(([crimeType, rate]) => `${crimeType}: ${rate}`).join(', ')}`;
+          // Add the constructed string to the list
+          breakdownList.push(categoryString);
+          } else if (key === "0"){ 
+            const categoryString = `${value}`
+          }
+
+      });
+        console.log(crimeCategory);
         // Extract the crime category and its rates
+        
         const category = Object.keys(crimeCategory)[0];
-        const rates = crimeCategory[category];
+        // const subrates = Object.keys(crimeCategory)[1]
+        const rates = crimeCategory[category]; 
 
         // Construct a string representation of the crime category and rates
         const categoryString = `${category}: ${Object.entries(rates).map(([crimeType, rate]) => `${crimeType}: ${rate}`).join(', ')}`;
@@ -203,7 +226,7 @@ export default function Landing() {
         
         {/* Render LeafletMap component */}
         <LeafletMap lat={latitude} lon={longitude} />
-        <ListComponent data={crimeData}/>
+        <ListComponent crimeData={crimeData}/>
       </div>
     </Container>
   );
