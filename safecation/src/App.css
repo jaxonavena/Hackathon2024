@@ -28,30 +28,37 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.landing-container{
+  background-color: #4A6D7C;
+  /* margin: 2px; */
 }
+
+.raised {
+  box-shadow: 0 0 5px 0px rgba(0,0,0,0.5);
+}
+.raised-glow {
+  box-shadow: 0 0 5px 0px rgba(255, 255, 255, 0.5);
+}
+
+.button{
+  background-color: #61dafb;
+}
+
 
 /* Set background color */
 body {
   /* background-image: url('../../widepolka.png'); */
-  background-color: rgba(71, 86, 87); /* Dark gray #475657*/
-  background-repeat: repeat; /* Repeat the texture */
-  margin: 0;
-  padding: 0;
+  background-color: #4A6D7C;
+  background-attachment: fixed;
   font-family: Arial, sans-serif;
 }
 
 .header {
-  background-color: #4A6D7C; /* Dark blue */
-  color: #DAD6D6; /* Light gray */
-  padding: 10px;
+  background-color: #92BFB1; 
+  padding: 8px;
   text-align: center;
+  color: white;
+  margin: 0 0 0 0;
 
   /* Add background image */
   background-image: url('../../logo.png');
@@ -64,23 +71,22 @@ body {
 
 
 /* Main content container */
-.container {
+.map {
   background-color: #1e2e1e; /* Dark green */
-  padding: 25px;
+  padding: 5px;
   margin: 20px auto;
-  max-width: 1000px;
+  max-width: 85%;
+  height: 62%;
+  /* max-height: fit-content; */
 }
 
-.map-div {
-  background-color: #92BFB1; /* Light green */
-  color: #DAD6D6; /* Light gray */
-  padding: 20px;
+.dropdown{
   text-align: center;
+  border-radius: 5px;
 }
 
-.search-bar {
-  margin: 10px;
-}
+
+
 .content-wrapper {
   display: flex;
 }
