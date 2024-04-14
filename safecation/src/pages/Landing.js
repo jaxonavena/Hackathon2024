@@ -133,23 +133,26 @@ const getZipCodesForSquares = async (coords) => {
   //   // FIXME: not working
     L.marker([lat, lon], {icon: mapMarker }).addTo(map).bindPopup('Your Location.');
 // Iterate over each dictionary in the array
-for (var i = 0; i < useableData.length; i++) {
-  var dataPoint = useableData[i];
-  var latitude = dataPoint.latitude; // Access latitude from the dictionary
-  var longitude = dataPoint.longitude; // Access longitude from the dictionary
+if (useableData && Array.isArray(useableData)) {
+  // Iterate over each dictionary in the array
+  for (var i = 0; i < useableData.length; i++) {
+      var dataPoint = useableData[i];
+      var latitude = dataPoint.latitude; // Access latitude from the dictionary
+      var longitude = dataPoint.longitude; // Access longitude from the dictionary
 
-  // Create a marker at the coordinates of the data point
-  var marker = L.marker([latitude, longitude]).addTo(map);
+      // Create a marker at the coordinates of the data point
+      var marker = L.marker([latitude, longitude]).addTo(map);
 
-  // Customize the marker based on the data attributes
-  // You can customize the popup content according to your data structure
-  var popupContent = '<b>Data Point</b>:<br>';
-  for (var key in dataPoint) {
-      if (dataPoint.hasOwnProperty(key) && key !== 'latitude' && key !== 'longitude') {
-          popupContent += `<b>${key}</b>: ${dataPoint[key]}<br>`;
+      // Customize the marker based on the data attributes
+      // You can customize the popup content according to your data structure
+      var popupContent = '<b>Data Point</b>:<br>';
+      for (var key in dataPoint) {
+          if (dataPoint.hasOwnProperty(key) && key !== 'latitude' && key !== 'longitude') {
+              popupContent += `<b>${key}</b>: ${dataPoint[key]}<br>`;
+          }
       }
+      marker.bindPopup(popupContent);
   }
-  marker.bindPopup(popupContent);
 }
 
 
