@@ -11,8 +11,8 @@ import Disease from '../request';
 
 export default function Landing() {
   const [address, setAddress] = useState("");
-  const [latitude, setLatitude] = useState(38.94);
-  const [longitude, setLongitude] = useState(-95.2678);
+  const [latitude, setLatitude] = useState( 39.097321);
+  const [longitude, setLongitude] = useState(-94.579925);
   const [zipCode, setZip] = useState(null);
   const [error, setError] = useState(null);
 
@@ -53,7 +53,7 @@ export default function Landing() {
       var latLng = L.latLng(lat, lon);
 
 // Calculate the half-side length (in degrees) for a 4 km region
-      var halfSideInDegrees = 0.1;
+      var halfSideInDegrees = 0.2;
 
       // Compute the bounds for the square
       var newsouthWest = L.latLng(latLng.lat - halfSideInDegrees, latLng.lng - halfSideInDegrees);
@@ -78,6 +78,8 @@ const dummyData = [
   { value: 0 },
   // Add more dummy data objects as needed
 ];
+
+
 const assignColorsToSquares = (lat, lng) => {
   const colors = [];
   coords.forEach((coordString, index) => {

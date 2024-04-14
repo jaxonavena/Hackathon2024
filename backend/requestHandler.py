@@ -48,10 +48,10 @@ def filter_data():
         print("Request Data: ", requestData)
         
         # Define boundaries for latitude and longitude
-        lat_lower_bound = latitude - 0.1
-        lat_upper_bound = latitude + 0.1
-        lon_lower_bound = longitude - 0.1
-        lon_upper_bound = longitude + 0.1
+        lat_lower_bound = latitude - 0.2
+        lat_upper_bound = latitude + 0.2
+        lon_lower_bound = longitude - 0.2
+        lon_upper_bound = longitude + 0.2
 
         # Filter DataFrame based on latitude and longitude ranges
         filtered_df = df[
