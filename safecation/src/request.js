@@ -28,11 +28,7 @@ function Disease({ requestData }) {
     }
   }, [requestData]);
 
-  return (
-    <div>
-      {responseData}
-    </div>
-  );
+  return JSON.stringify(responseData, null, 2);
 }
 
 export default Disease;
