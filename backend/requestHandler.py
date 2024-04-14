@@ -5,27 +5,7 @@ import pandas as pd
 import numpy as np
 import json
 
-# def trim_data(latitude, longitude):
-#     df = pd.read_csv('./Assets/diseases_cleaned.csv')
-    
-#     print(f"Lat: {latitude}, lon: {longitude}")
-    
-#     trimmed_df = df[
-#         (df['longitude'] + 0.1 < )
-#     ]   
 
-# def retrieve_data_from_csv(csv_file, key):
-#     with open(csv_file, 'r') as file:
-#         csv_reader = csv.DictReader(file)
-#         for row in csv_reader:
-#             if key[0] == '0':
-#                 slicedKey = key[1:]
-#                 if slicedKey == row['LocationName']:
-#                     return row
-#             else:
-#                 if row['LocationName'] == key:
-#                     return row
-                
 app = Flask(__name__)
 CORS(app)
 

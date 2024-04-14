@@ -8,12 +8,18 @@
     background-color: #007bff;
     color: #fff;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 8%;
+    height: 8%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    gap: 5%;
+  }
+
+  .message-icon:hover{
+    cursor: pointer;
+    background-color: #288cf8;
   }
   
   /* Style for the chat box */
@@ -26,7 +32,7 @@
     border-radius: 5px;
     padding: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    width: 15%;
   }
   
   /* Style for chat messages */

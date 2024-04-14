@@ -20,7 +20,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
   color: white;
 }
 
@@ -36,9 +35,7 @@
 .raised {
   box-shadow: 0 0 5px 0px rgba(0,0,0,0.5);
 }
-.raised-glow {
-  box-shadow: 0 0 5px 0px rgba(255, 255, 255, 0.5);
-}
+
 
 .button{
   background-color: #61dafb;
@@ -55,10 +52,11 @@ body {
 
 .header {
   background-color: #92BFB1; 
-  padding: 8px;
+  padding: 12px;
   text-align: center;
   color: white;
   margin: 0 0 0 0;
+  font-size: calc(32px + 2vmin);
 
   /* Add background image */
   background-image: url('../../logo.png');
@@ -75,8 +73,8 @@ body {
   background-color: #1e2e1e; /* Dark green */
   padding: 5px;
   margin: 20px auto;
-  max-width: 85%;
-  height: 62%;
+  max-width: 65%;
+  height: 60%;
   /* max-height: fit-content; */
 }
 

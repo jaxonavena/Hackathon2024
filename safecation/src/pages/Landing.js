@@ -68,65 +68,6 @@ export default function Landing() {
       
       var latLng = L.latLng(lat, lon);
 
-// Calculate the half-side length (in degrees) for a 4 km region
-      var halfSideInDegrees = 0.2;
-
-      // Compute the bounds for the square
-      var newsouthWest = L.latLng(latLng.lat - halfSideInDegrees, latLng.lng - halfSideInDegrees);
-      var tempnorthEast = L.latLng(latLng.lat + halfSideInDegrees, latLng.lng + halfSideInDegrees);
-      var tempbounds = L.latLngBounds(newsouthWest, tempnorthEast);
-
-      // Create a rectangle (square) using the bounds
-    //  L.rectangle(tempbounds, { color: 'red', fillOpacity: 0.1 }).addTo(map);
-     var smallerSideInDegrees = 0.025;
-      let coords = [];
-// Create a 40x40 grid of smaller squares
-const dummyData = [
-  { value: 25 },
-  { value: 22 },
-  { value: 20 },
-  { value: 15 },
-  { value: 12 },
-  { value: 10 },
-  { value: 8 },
-  { value: 5 },
-  { value: 2 },
-  { value: 0 },
-  // Add more dummy data objects as needed
-];
-
-
-const assignColorsToSquares = (lat, lng) => {
-  const colors = [];
-  coords.forEach((coordString, index) => {
-    const [tempLat, tempLng] = coordString.split(',').map(parseFloat);
-    const dataValue = dummyData[index % dummyData.length].value; // Get corresponding dummy data value
-    const color = getColor(dataValue); // Get color based on dummy data value
-    colors.push(color); // Store color for each square
-  });
-  return colors;
-};
-
-// Inside your loop:
-// for (var i = 0; i < 10; i++) {
-//   for (var j = 0; j < 10; j++) {
-//     var swLat = lat + (i - 5) * smallerSideInDegrees;
-//     var swLng = lon + (j - 5) * smallerSideInDegrees;
-//     var neLat = swLat + smallerSideInDegrees;
-//     var neLng = swLng + smallerSideInDegrees;
-
-//     var tempLat = (swLat + neLat) / 2;
-//     var tempLng = (swLng + neLng) / 2;
-
-//     coords.push(`${tempLat},${tempLng}`);
-
-//     var smallerBounds = L.latLngBounds(L.latLng(swLat, swLng), L.latLng(neLat, neLng));
-//     var color = assignColorsToSquares(tempLat, tempLng)[i * 10 + j]; // Get color for current square
-//     L.rectangle(smallerBounds, { color: color, fillOpacity: 0.5 }).addTo(map);
-//   }
-// }
-
-
 
 
 // var category = 'Obesity'; // Example category
@@ -228,21 +169,6 @@ function determineLevel(value, categoryIndex) {
   }
 }
 
-    // // Function to assign colors based on values
-    function getColor(value) {
-        return value > 20 ? '#AA0000' :
-               value > 15 ? '#D60000' :
-               value > 10 ? '#FF0000' :
-               value > 5 ? '#FF2C2C' :
-               value > 0 ? '#FF5353' :
-                           '#FF7979';
-        // const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF']
-
-        // let index = value % colors.length
-    
-        // return colors[index]
-      }
-      
    
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
