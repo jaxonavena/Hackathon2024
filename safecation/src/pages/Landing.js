@@ -288,15 +288,14 @@ function determineLevel(value) {
       }
     const data = await response.json();
     const zip = data.results[0].postal_code;
-    console.log(zip);
+
     setZipcode(zip); 
-    console.log("Zip Code: ", zip);
+    // console.log("Zip Code: ", zip);
 
 
     
     setError(null);
     } catch (error) {
-      console.log("fucking bug");
       console.error(error);
       setError(error);
       
@@ -326,8 +325,12 @@ function determineLevel(value) {
 
       const data = await response.json();
 
+
+
+
+
       const breakdownList = [];
-      // console.log(data);
+      console.log(data);
 
       // Iterate over the Crime Breakdown array
       const overallData = data['Overall'];
@@ -338,55 +341,46 @@ function determineLevel(value) {
       });
       
       data['Crime BreakDown'].forEach(crimeCategory => {
-        Object.entries(crimeCategory).forEach(([key,value]) => {
-          
-         
-          if (key != "0"){
-          const categoryString = `${key}: ${Object.entries(value).map(([crimeType, rate]) => `${crimeType}: ${rate}`).join(', ')}`;
-          // Add the constructed string to the list
-          breakdownList.push(categoryString);
-          } else if (key === "0"){ 
-            const categoryString = `${value}`
-          }
+        Object.entries(crimeCategory).forEach(([key, value]) => {
 
-      });
-        console.log(crimeCategory);
-        // Extract the crime category and its rates
-        
-        const category = Object.keys(crimeCategory)[0];
-        // const subrates = Object.keys(crimeCategory)[1]
-        const rates = crimeCategory[category]; 
+               
 
-        // Construct a string representation of the crime category and rates
-        const categoryString = `${category}: ${Object.entries(rates).map(([crimeType, rate]) => `${crimeType}: ${rate}`).join(', ')}`;
+              const categoryString = `${Object.entries(value).map(([crimeType, rate]) => `${crimeType}: ${rate}`).join(', ')}`;
+              // Add the constructed string to the list
+              breakdownList.push(categoryString);
 
-        // Add the constructed string to the list
-        breakdownList.push(categoryString);
-      });
+    
+          });
 
       // Set the crime breakdown list in the state
       setcrimeData(breakdownList);
       console.log("breakdown list: ",breakdownList)
-      
-      // const result = await response.text();
-      // console.log(result);
+        });
+
     } catch (error) {
       console.error(error);
     }
 
   }
-  // useEffect(() => {
-  //   if (crimeData && crimeData !== [] ) {
-  //     console.log("crimeData: " );
-  //     console.log(crimeData);
-  //   }
-  //   }, [crimeData]);
+
   let requestData = [latitude, longitude];
 
   const responseData = Disease({ requestData });
 
   let useableData = JSON.parse(responseData);
+
   // console.log("Data: ", useableData);
+
+  const headers = ['All Teeth Lost', 'Annual Checkup', 'Any Disability', 'Arthritis', 'Binge Drinking', 'COPD', 'Cancer (except skin)', 'Cervical Cancer Screening', 'Cholesterol Screening', 'Chronic Kidney Disease', 'Cognitive Disability', 'Colorectal Cancer Screening', 'Core preventive services for older men', 'Core preventive services for older women', 'Coronary Heart Disease', 'Current Asthma', 'Current Smoking', 'Dental Visit', 'Depression', 'Diabetes', 'General Health', 'Health Insurance', 'Hearing Disability', 'High Blood Pressure', 'High Cholesterol', 'Independent Living Disability', 'Mammography', 'Mental Health', 'Mobility Disability', 'Obesity', 'Physical Health', 'Physical Inactivity', 'Self-care Disability', 'Sleep <7 hours', 'Stroke', 'Taking BP Medication', 'Vision Disability', 'longitude', 'latitude'];
+  console.log("Data: ", useableData);
+  const [selectedOption, setSelectedOption] = useState('');
+  console.log(selectedOption)
+
+  // Event handler for selecting an option
+  const handleSelectChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
+
 
   // console.log(requestData);
   return (
@@ -403,10 +397,18 @@ function determineLevel(value) {
 
         {/* Render LeafletMap component */}
         {/* <br></br> */}
+        <select className="scrollable-select" value={selectedOption} onChange={handleSelectChange}>
+          <option value="">Select an option</option>
+          {headers.map((header, index) => (
+            <option key={index} value={header}>{header}</option>
+          ))}
+        </select>
         <Container className="w-75 align-items-start" >
           <LeafletMap 
             lat={latitude} lon={longitude} />
         </Container>
+      
+        
       <div>
         <Disease requestData={zipCode}/>
         <CrimeListComponent crimeData={crimeData}/>
@@ -415,3 +417,4 @@ function determineLevel(value) {
   );
 
 }
+
