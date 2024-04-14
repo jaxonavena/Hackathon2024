@@ -5,7 +5,7 @@ import L from 'leaflet';
 import Header from '../components/Header';
 import 'leaflet/dist/leaflet.css';
 import Disease from '../request';
-
+import CrimeListComponent from './crimelist'; 
 
 
 
@@ -241,7 +241,7 @@ const getZipCodesForSquares = async (coords) => {
 
       console.log("Latitude: ", lat);
       console.log("Longitude: ", lng);
-      console.log("Zip: ", zip);
+      // console.log("Zip: ", zip);
       setError(null);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -375,7 +375,7 @@ const getZipCodesForSquares = async (coords) => {
         </Container>
       <div>
         <Disease requestData={zipCode}/>
-        <ListComponent crimeData={crimeData}/>
+        <CrimeListComponent crimeData={crimeData}/>
       </div>
     </Container>
   );

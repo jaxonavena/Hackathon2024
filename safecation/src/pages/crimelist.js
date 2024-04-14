@@ -1,6 +1,7 @@
 import React from 'react';
 import { FixedSizeList } from 'react-window';
 import crimeData from './Landing';
+import './crimelist.css';
 
 
 
@@ -32,15 +33,14 @@ function CrimeListComponent({ crimeData }) {
   });
 
   return (
-    <div>
-      <h2>Crime Data</h2>
-      <ul>
+    <div className="crime-data-container">
+      <h2 className="crime-data-heading">Crime Data</h2>
+      <ul className="crime-list">
         {parsedData.map((crime, index) => (
-          <li key={index}>
-            {/* <strong>Category {index + 1}:</strong> */}
-            <ul>
+          <li key={index} className="crime-item">
+            <ul className="crime-details">
               {Object.entries(crime).map(([key, value]) => (
-                <li key={key}>
+                <li key={key} className="crime-detail-item">
                   <strong>{key}:</strong> {value}
                 </li>
               ))}
@@ -50,6 +50,7 @@ function CrimeListComponent({ crimeData }) {
       </ul>
     </div>
   );
+  
 }
 
 export default CrimeListComponent;
