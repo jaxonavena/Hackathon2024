@@ -5,7 +5,7 @@ import L from 'leaflet';
 import Header from '../components/Header';
 import 'leaflet/dist/leaflet.css';
 import Disease from '../request';
-
+import CrimeListComponent from './crimelist'; 
 
 
 
@@ -15,6 +15,10 @@ export default function Landing() {
   const [longitude, setLongitude] = useState(-94.579925);
   const [zipCode, setZip] = useState(null);
   const [error, setError] = useState(null);
+  const [zipcode, setZipcode] = useState(12345);
+  const [crimeData, setcrimeData] = useState([]);
+
+
 
   const LeafletMap = ({lat, lon}) => {
     useEffect(() => {
@@ -230,22 +234,49 @@ const getZipCodesForSquares = async (coords) => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-
+    
       const data = await response.json();
       const { lat, lng } = data.results[0].location;
-      const zip = data.results[0].postal_code
+  
       setLatitude(lat);
       setLongitude(lng);
-      setZip(zip);
-      console.log("data: ", data.results)
+
       console.log("Latitude: ", lat);
       console.log("Longitude: ", lng);
-      console.log("Zip: ", zip);
+      // console.log("Zip: ", zip);
       setError(null);
     } catch (error) {
       console.error('Error fetching data:', error);
       setError(error.message);
     }
+    try {
+      const response = await fetch(`https://trueway-geocoding.p.rapidapi.com/ReverseGeocode?location=${latitude}%2C${longitude}&language=en`, {
+        method: 'GET',
+        headers: {
+          'X-RapidAPI-Key': 'abb6831505msh0c50a361893b679p152f46jsn439e4eba5ca4',
+          'X-RapidAPI-Host': 'trueway-geocoding.p.rapidapi.com'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+    const data = await response.json();
+    const zip = data.results[0].postal_code;
+    console.log(zip);
+    setZipcode(zip); 
+    console.log("Zip Code: ", zip);
+
+
+    
+    setError(null);
+    } catch (error) {
+      console.log("fucking bug");
+      console.error(error);
+      setError(error);
+      
+    }
+    
   }
   let requestData = [latitude, longitude];
 
@@ -273,9 +304,10 @@ const getZipCodesForSquares = async (coords) => {
           <LeafletMap 
             lat={latitude} lon={longitude} />
         </Container>
-      {/* <div>
-        <Disease requestData={requestData}/>
-      </div> */}
+      <div>
+        <Disease requestData={zipCode}/>
+        <CrimeListComponent crimeData={crimeData}/>
+      </div>
     </Container>
   );
 
