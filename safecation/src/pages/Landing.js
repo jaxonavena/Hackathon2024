@@ -6,6 +6,9 @@ import Header from '../components/Header';
 import 'leaflet/dist/leaflet.css';
 import Disease from '../request';
 import CrimeListComponent from './crimelist'; 
+import Select from "react-dropdown-select";
+
+
 
 
 
@@ -54,18 +57,7 @@ export default function Landing() {
         popupAnchor: [0, -32] // point from which the popup should open relative to the iconAnchor
       });
 
-      var ranges = [
-        { min: 0, max: 20, style: { color: 'green' } },    // Example range 1: 0-20
-        { min: 20, max: 40, style: { color: 'yellow' } },  // Example range 2: 20-40
-        { min: 40, max: 100, style: { color: 'red' } }     // Example range 3: 40-100
-    ];
-      // let diseaseMarker = L.icon({
-      //   iconUrl: '../../../map-marker-svgrepo-com.svg',
-      //   // iconUrl: '../../public/map.png',
-      //   iconSize: [32, 32], // size of the icon
-      //   iconAnchor: [16, 32], // point of the icon which will correspond to marker's location
-      //   popupAnchor: [0, -32] // point from which the popup should open relative to the iconAnchor
-      // });
+
 
       var diseaseMarker = {
           "good": "../../../good.svg",
@@ -135,21 +127,48 @@ const assignColorsToSquares = (lat, lng) => {
 
 
 
-const getZipCodesForSquares = async (coords) => {
-  try {
-    const zipCodes = await Promise.all(coords.map(async (coordString) => {
-      const [latitude, longitude] = coordString.split(',').map(parseFloat);
-      return await handleZip(latitude, longitude); // Fetch zip code for coordinates
-    }));
-    console.log(zipCodes); // Array of zip codes for each square
-    // Do something with the zip codes here
-  } catch (error) {
-    console.error('Error fetching zip codes:', error);
-    // Handle error
-  }
-}
-var category = 'Obesity'; // Example category
 
+// var category = 'Obesity'; // Example category
+const quartiles = [[12.6, 17.0],
+[73.0, 76.4],
+[27.7, 33.8],
+[26.1, 30.4],
+[15.4, 17.5],
+[6.7, 8.8],
+[6.8, 7.8],
+[80.8, 83.4],
+[82.8, 85.6],
+[2.9, 3.4],
+[12.3, 15.5],
+[67.1, 71.8],
+[40.7, 45.7],
+[35.0, 39.6],
+[5.8, 7.4],
+[9.9, 10.8],
+[15.9, 20.0],
+[58.4, 66.1],
+[21.2, 24.0],
+[9.9, 12.3],
+[14.9, 19.5],
+[7.4, 10.8],
+[6.6, 8.3],
+[31.9, 37.0],
+[34.6, 37.8],
+[7.1, 9.1],
+[73.3, 76.4],
+[14.9, 17.3],
+[12.7, 16.6],
+[34.4, 38.7],
+[11.1, 13.5],
+[23.3, 28.6],
+[3.4, 4.5],
+[31.7, 34.9],
+[3.0, 3.7],
+[76.4, 79.7],
+[4.2, 5.7],
+[-94.48572, -82.584],
+[37.099, 41.23136]]
+let categoryIndex = null;
   //   // FIXME: not working
     L.marker([lat, lon], {icon: mapMarker }).addTo(map).bindPopup('Your Location.');
 // Iterate over each dictionary in the array
@@ -168,13 +187,13 @@ if (useableData && Array.isArray(useableData)) {
            && key !== 'latitude' && key !== 'longitude'
           && key === category) {
               popupContent = `<b>${key}</b>: ${dataPoint[key]}<br>`;
+              // let categoryIndex = key.indexOf
           }
       }
+      categoryIndex = Object.keys(dataPoint).indexOf(category); // Assign the category index
 
-      // Determine the appropriate icon URL based on the value of the data point
-      
       var value = dataPoint[category]; // Example value
-      var level = determineLevel(value); // Function to determine range type (good, medium, bad)
+      var level = determineLevel(value, categoryIndex); // Function to determine range type (good, medium, bad)
       // console.log("val: ", level);
       
       var iconUrl = diseaseMarker[level];
@@ -190,12 +209,23 @@ if (useableData && Array.isArray(useableData)) {
 }
 
 // Function to determine range type (good, medium, bad) based on value
-function determineLevel(value) {
-  // Logic to determine range type based on value
-  // Example logic: if value is below 33% quartile, return 'good', if it's between 33% and 67% quartile, return 'medium', otherwise return 'bad'
-  return value < 34.4 ? 'good' : (value < 38.7 ? 'medium' : 'bad');
-}
 
+function determineLevel(value, categoryIndex) {
+
+
+  const categoryQuartiles = quartiles[categoryIndex];
+  const lowerQuartile = categoryQuartiles[0];
+  const upperQuartile = categoryQuartiles[1];
+
+
+  if (value < lowerQuartile) {
+    return 'good';
+  } else if (value >= lowerQuartile && value <= upperQuartile) {
+    return 'medium';
+  } else {
+    return 'bad';
+  }
+}
 
     // // Function to assign colors based on values
     function getColor(value) {
@@ -218,7 +248,7 @@ function determineLevel(value) {
       }).addTo(map);
     }, []);
   
-    return <div id="leaflet-map" style={{ height: '50vh' }}></div>;
+    return <div id="leaflet-map" style={{ height: '100vh' }}></div>;
   };
   const handleZip = async (latitude, longitude) => {
     try {
@@ -318,7 +348,7 @@ function determineLevel(value) {
       const response = await fetch(`https://crime-data-by-zipcode-api.p.rapidapi.com/crime_data?zip=${zipcode}`,  {     
       method: 'GET',
       headers: {
-        'X-RapidAPI-Key': '01836c3714msh582bac2093a6a03p19e6abjsn2b918034e4c0',
+        'X-RapidAPI-Key': '40490862d2mshd2a98d5e24b9202p10d69cjsn56b107af938d',
         'X-RapidAPI-Host': 'crime-data-by-zipcode-api.p.rapidapi.com'
       }
       });
@@ -372,47 +402,54 @@ function determineLevel(value) {
   // console.log("Data: ", useableData);
 
   const headers = ['All Teeth Lost', 'Annual Checkup', 'Any Disability', 'Arthritis', 'Binge Drinking', 'COPD', 'Cancer (except skin)', 'Cervical Cancer Screening', 'Cholesterol Screening', 'Chronic Kidney Disease', 'Cognitive Disability', 'Colorectal Cancer Screening', 'Core preventive services for older men', 'Core preventive services for older women', 'Coronary Heart Disease', 'Current Asthma', 'Current Smoking', 'Dental Visit', 'Depression', 'Diabetes', 'General Health', 'Health Insurance', 'Hearing Disability', 'High Blood Pressure', 'High Cholesterol', 'Independent Living Disability', 'Mammography', 'Mental Health', 'Mobility Disability', 'Obesity', 'Physical Health', 'Physical Inactivity', 'Self-care Disability', 'Sleep <7 hours', 'Stroke', 'Taking BP Medication', 'Vision Disability', 'longitude', 'latitude'];
-  console.log("Data: ", useableData);
-  const [selectedOption, setSelectedOption] = useState('');
-  console.log(selectedOption)
+  
+  
+  // console.log("Data: ", useableData);
+  const [category, setcategory] = useState('Obesity');
+  // console.log(category)
 
-  // Event handler for selecting an option
+
   const handleSelectChange = (event) => {
-    setSelectedOption(event.target.value);
+    setcategory(event.target.value);
   };
 
 
   // console.log(requestData);
   return (
-<Container className="landing-container bg-dark vh-100 p-4" fluid>
-      <h1 className="header mh-25">Safecation</h1>
-      <div className="d-flex map-div align-items-center justify-content-center">
-        <Input className="d-flex search-bar w-50"
+<Container className="landing-container vh-100 " fluid>
+      <h1 className="header  raised">Safecation</h1>
+      <div className="d-flex map-div align-items-center mt-4 mb-2 gap-2 justify-content-center">
+        <Input className="d-flex search-bar h-75 w-50"
          type="text"
-          placeholder="Enter address"
+          placeholder="Enter address or zip code..."
           autoFocus 
           value={address} onChange={(e) => setAddress(e.target.value)}/>
-        <Button onClick={handleAddress}>Enter</Button>
+        <Button className='button' onClick={handleAddress}>Enter</Button>
       </div>
 
         {/* Render LeafletMap component */}
         {/* <br></br> */}
-        <select className="scrollable-select" value={selectedOption} onChange={handleSelectChange}>
-          <option value="">Select an option</option>
-          {headers.map((header, index) => (
-            <option key={index} value={header}>{header}</option>
-          ))}
-        </select>
-        <Container className="w-75 align-items-start" >
+        <Container className="d-flex align-items-center justify-content-center">
+          <select className="d-flex mt-2 h-75 dropdown w-25 fs-4"
+          value={category}
+            onChange={handleSelectChange}>
+            <option value="" placeholder='Choose a health concern'></option>
+            {headers.map((header, index) => (
+              <option key={index} value={header}>{header}</option>
+            ))}
+          </select>
+        </Container>
+        <Container className="map d-flex flex-column raised" >
           <LeafletMap 
             lat={latitude} lon={longitude} />
         </Container>
       
         
-      <div>
-        <Disease requestData={zipCode}/>
+      <Container>
         <CrimeListComponent crimeData={crimeData}/>
-      </div>
+      </Container>
+
+
     </Container>
   );
 

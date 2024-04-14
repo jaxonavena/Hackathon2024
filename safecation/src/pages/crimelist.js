@@ -13,7 +13,7 @@ console.log(crimeData);
 function CrimeListComponent({ crimeData }) {
   // Check if crimeData is defined
   if (!crimeData || crimeData.length === 0) {
-    return <div>No crime data available</div>;
+    return <h1 className='raised-glow'>Enter an address to see crime data</h1>;
   }
 
   // Parse the crime data strings to extract relevant information
