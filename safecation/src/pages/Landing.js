@@ -54,6 +54,25 @@ export default function Landing() {
         popupAnchor: [0, -32] // point from which the popup should open relative to the iconAnchor
       });
 
+      var ranges = [
+        { min: 0, max: 20, style: { color: 'green' } },    // Example range 1: 0-20
+        { min: 20, max: 40, style: { color: 'yellow' } },  // Example range 2: 20-40
+        { min: 40, max: 100, style: { color: 'red' } }     // Example range 3: 40-100
+    ];
+      // let diseaseMarker = L.icon({
+      //   iconUrl: '../../../map-marker-svgrepo-com.svg',
+      //   // iconUrl: '../../public/map.png',
+      //   iconSize: [32, 32], // size of the icon
+      //   iconAnchor: [16, 32], // point of the icon which will correspond to marker's location
+      //   popupAnchor: [0, -32] // point from which the popup should open relative to the iconAnchor
+      // });
+
+      var diseaseMarker = {
+          "good": "../../../good.svg",
+          "medium": "../../../medium.svg",
+          "bad": "../../../bad.svg"
+      }
+      
       var latLng = L.latLng(lat, lon);
 
 // Calculate the half-side length (in degrees) for a 4 km region
@@ -129,6 +148,7 @@ const getZipCodesForSquares = async (coords) => {
     // Handle error
   }
 }
+var category = 'Obesity'; // Example category
 
   //   // FIXME: not working
     L.marker([lat, lon], {icon: mapMarker }).addTo(map).bindPopup('Your Location.');
@@ -140,19 +160,40 @@ if (useableData && Array.isArray(useableData)) {
       var latitude = dataPoint.latitude; // Access latitude from the dictionary
       var longitude = dataPoint.longitude; // Access longitude from the dictionary
 
-      // Create a marker at the coordinates of the data point
-      var marker = L.marker([latitude, longitude]).addTo(map);
-
       // Customize the marker based on the data attributes
       // You can customize the popup content according to your data structure
       var popupContent = '<b>Data Point</b>:<br>';
       for (var key in dataPoint) {
-          if (dataPoint.hasOwnProperty(key) && key !== 'latitude' && key !== 'longitude') {
-              popupContent += `<b>${key}</b>: ${dataPoint[key]}<br>`;
+          if (dataPoint.hasOwnProperty(key)
+           && key !== 'latitude' && key !== 'longitude'
+          && key === category) {
+              popupContent = `<b>${key}</b>: ${dataPoint[key]}<br>`;
           }
       }
-      marker.bindPopup(popupContent);
+
+      // Determine the appropriate icon URL based on the value of the data point
+      
+      var value = dataPoint[category]; // Example value
+      var level = determineLevel(value); // Function to determine range type (good, medium, bad)
+      // console.log("val: ", level);
+      
+      var iconUrl = diseaseMarker[level];
+
+      // Create a marker at the coordinates of the data point
+     L.marker([latitude, longitude],
+         { icon: L.icon({ iconUrl: iconUrl ,
+          iconSize: [32, 32], // size of the icon
+          iconAnchor: [16, 32], // point of the icon which will correspond to marker's location
+          popupAnchor: [0, -32]}) },
+        ).addTo(map).bindPopup(popupContent);
   }
+}
+
+// Function to determine range type (good, medium, bad) based on value
+function determineLevel(value) {
+  // Logic to determine range type based on value
+  // Example logic: if value is below 33% quartile, return 'good', if it's between 33% and 67% quartile, return 'medium', otherwise return 'bad'
+  return value < 34.4 ? 'good' : (value < 38.7 ? 'medium' : 'bad');
 }
 
 
@@ -171,13 +212,7 @@ if (useableData && Array.isArray(useableData)) {
         // return colors[index]
       }
       
-    
-      // assignColorsToSquares();
-    // Create a GeoJSON layer with custom styles and add it to the map
-    // L.geoJSON(geojsonFeature, {
-    //     style: style
-    // }).addTo(map);
-      // Add a tile layer (e.g., OpenStreetMap)
+   
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
@@ -351,7 +386,7 @@ if (useableData && Array.isArray(useableData)) {
   const responseData = Disease({ requestData });
 
   let useableData = JSON.parse(responseData);
-  console.log("Data: ", useableData);
+  // console.log("Data: ", useableData);
 
   // console.log(requestData);
   return (
@@ -380,10 +415,3 @@ if (useableData && Array.isArray(useableData)) {
   );
 
 }
-
-
-// DAD6D6
-// 92BFB1
-// 4A6D7C
-// 001400
-// 475657
