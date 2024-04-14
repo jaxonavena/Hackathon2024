@@ -5,7 +5,7 @@ import L from 'leaflet';
 import Header from '../components/Header';
 import 'leaflet/dist/leaflet.css';
 import Disease from '../request';
-
+import CrimeListComponent from './crimelist'; 
 
 
 
@@ -15,6 +15,10 @@ export default function Landing() {
   const [longitude, setLongitude] = useState(-95.2678);
   const [zipCode, setZip] = useState(null);
   const [error, setError] = useState(null);
+  const [zipcode, setZipcode] = useState(12345);
+  const [crimeData, setcrimeData] = useState([]);
+
+
 
   const LeafletMap = ({lat, lon}) => {
     useEffect(() => {
@@ -228,23 +232,128 @@ const getZipCodesForSquares = async (coords) => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-
+    
       const data = await response.json();
       const { lat, lng } = data.results[0].location;
-      const zip = data.results[0].postal_code
+  
       setLatitude(lat);
       setLongitude(lng);
-      setZip(zip);
-      console.log("data: ", data.results)
+
       console.log("Latitude: ", lat);
       console.log("Longitude: ", lng);
-      console.log("Zip: ", zip);
+      // console.log("Zip: ", zip);
       setError(null);
     } catch (error) {
       console.error('Error fetching data:', error);
       setError(error.message);
     }
+    try {
+      const response = await fetch(`https://trueway-geocoding.p.rapidapi.com/ReverseGeocode?location=${latitude}%2C${longitude}&language=en`, {
+        method: 'GET',
+        headers: {
+          'X-RapidAPI-Key': 'abb6831505msh0c50a361893b679p152f46jsn439e4eba5ca4',
+          'X-RapidAPI-Host': 'trueway-geocoding.p.rapidapi.com'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+    const data = await response.json();
+    const zip = data.results[0].postal_code;
+    console.log(zip);
+    setZipcode(zip); 
+    console.log("Zip Code: ", zip);
+
+
+    
+    setError(null);
+    } catch (error) {
+      console.log("fucking bug");
+      console.error(error);
+      setError(error);
+      
+    }
+    
   }
+  useEffect(() => {
+    if (zipcode && zipcode !== 12345) {
+      console.log("grabing crime data")
+      getCrime();
+    }
+    }, [zipcode]);
+  // console.log("zip: ", zipcode)
+
+  const getCrime = async () => {
+
+ 
+    try {
+
+      const response = await fetch(`https://crime-data-by-zipcode-api.p.rapidapi.com/crime_data?zip=${zipcode}`,  {     
+      method: 'GET',
+      headers: {
+        'X-RapidAPI-Key': '01836c3714msh582bac2093a6a03p19e6abjsn2b918034e4c0',
+        'X-RapidAPI-Host': 'crime-data-by-zipcode-api.p.rapidapi.com'
+      }
+      });
+
+      const data = await response.json();
+
+      const breakdownList = [];
+      // console.log(data);
+
+      // Iterate over the Crime Breakdown array
+      const overallData = data['Overall'];
+
+      Object.entries(overallData).forEach(([key, value]) => {
+        const categoryString = `${key}: ${value}`;
+        breakdownList.push(categoryString);
+      });
+      
+      data['Crime BreakDown'].forEach(crimeCategory => {
+        Object.entries(crimeCategory).forEach(([key,value]) => {
+          
+         
+          if (key != "0"){
+          const categoryString = `${key}: ${Object.entries(value).map(([crimeType, rate]) => `${crimeType}: ${rate}`).join(', ')}`;
+          // Add the constructed string to the list
+          breakdownList.push(categoryString);
+          } else if (key === "0"){ 
+            const categoryString = `${value}`
+          }
+
+      });
+        console.log(crimeCategory);
+        // Extract the crime category and its rates
+        
+        const category = Object.keys(crimeCategory)[0];
+        // const subrates = Object.keys(crimeCategory)[1]
+        const rates = crimeCategory[category]; 
+
+        // Construct a string representation of the crime category and rates
+        const categoryString = `${category}: ${Object.entries(rates).map(([crimeType, rate]) => `${crimeType}: ${rate}`).join(', ')}`;
+
+        // Add the constructed string to the list
+        breakdownList.push(categoryString);
+      });
+
+      // Set the crime breakdown list in the state
+      setcrimeData(breakdownList);
+      console.log("breakdown list: ",breakdownList)
+      
+      // const result = await response.text();
+      // console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
+
+  }
+  // useEffect(() => {
+  //   if (crimeData && crimeData !== [] ) {
+  //     console.log("crimeData: " );
+  //     console.log(crimeData);
+  //   }
+  //   }, [crimeData]);
   let requestData = [latitude, longitude];
 
   const responseData = Disease({ requestData });
@@ -271,9 +380,10 @@ const getZipCodesForSquares = async (coords) => {
           <LeafletMap 
             lat={latitude} lon={longitude} />
         </Container>
-      {/* <div>
-        <Disease requestData={requestData}/>
-      </div> */}
+      <div>
+        <Disease requestData={zipCode}/>
+        <CrimeListComponent crimeData={crimeData}/>
+      </div>
     </Container>
   );
 
