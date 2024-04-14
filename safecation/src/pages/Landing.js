@@ -11,8 +11,8 @@ import CrimeListComponent from './crimelist';
 
 export default function Landing() {
   const [address, setAddress] = useState("");
-  const [latitude, setLatitude] = useState(38.94);
-  const [longitude, setLongitude] = useState(-95.2678);
+  const [latitude, setLatitude] = useState( 39.097321);
+  const [longitude, setLongitude] = useState(-94.579925);
   const [zipCode, setZip] = useState(null);
   const [error, setError] = useState(null);
   const [zipcode, setZipcode] = useState(12345);
@@ -47,7 +47,7 @@ export default function Landing() {
     }).setView([lat, lon], 16);
 
       const mapMarker = L.icon({
-        iconUrl: '../../public/map-marker-svgrepo-com.svg',
+        iconUrl: '../../../map-marker-svgrepo-com.svg',
         // iconUrl: '../../public/map.png',
         iconSize: [32, 32], // size of the icon
         iconAnchor: [16, 32], // point of the icon which will correspond to marker's location
@@ -57,7 +57,7 @@ export default function Landing() {
       var latLng = L.latLng(lat, lon);
 
 // Calculate the half-side length (in degrees) for a 4 km region
-      var halfSideInDegrees = 0.1;
+      var halfSideInDegrees = 0.2;
 
       // Compute the bounds for the square
       var newsouthWest = L.latLng(latLng.lat - halfSideInDegrees, latLng.lng - halfSideInDegrees);
@@ -82,6 +82,8 @@ const dummyData = [
   { value: 0 },
   // Add more dummy data objects as needed
 ];
+
+
 const assignColorsToSquares = (lat, lng) => {
   const colors = [];
   coords.forEach((coordString, index) => {
@@ -94,23 +96,23 @@ const assignColorsToSquares = (lat, lng) => {
 };
 
 // Inside your loop:
-for (var i = 0; i < 10; i++) {
-  for (var j = 0; j < 10; j++) {
-    var swLat = lat + (i - 5) * smallerSideInDegrees;
-    var swLng = lon + (j - 5) * smallerSideInDegrees;
-    var neLat = swLat + smallerSideInDegrees;
-    var neLng = swLng + smallerSideInDegrees;
+// for (var i = 0; i < 10; i++) {
+//   for (var j = 0; j < 10; j++) {
+//     var swLat = lat + (i - 5) * smallerSideInDegrees;
+//     var swLng = lon + (j - 5) * smallerSideInDegrees;
+//     var neLat = swLat + smallerSideInDegrees;
+//     var neLng = swLng + smallerSideInDegrees;
 
-    var tempLat = (swLat + neLat) / 2;
-    var tempLng = (swLng + neLng) / 2;
+//     var tempLat = (swLat + neLat) / 2;
+//     var tempLng = (swLng + neLng) / 2;
 
-    coords.push(`${tempLat},${tempLng}`);
+//     coords.push(`${tempLat},${tempLng}`);
 
-    var smallerBounds = L.latLngBounds(L.latLng(swLat, swLng), L.latLng(neLat, neLng));
-    var color = assignColorsToSquares(tempLat, tempLng)[i * 10 + j]; // Get color for current square
-    L.rectangle(smallerBounds, { color: color, fillOpacity: 0.5 }).addTo(map);
-  }
-}
+//     var smallerBounds = L.latLngBounds(L.latLng(swLat, swLng), L.latLng(neLat, neLng));
+//     var color = assignColorsToSquares(tempLat, tempLng)[i * 10 + j]; // Get color for current square
+//     L.rectangle(smallerBounds, { color: color, fillOpacity: 0.5 }).addTo(map);
+//   }
+// }
 
 
 
@@ -129,40 +131,30 @@ const getZipCodesForSquares = async (coords) => {
 }
 
   //   // FIXME: not working
-    L.marker([lat, lon], {icon: mapMarker }).addTo(map).bindPopup('Your pin');
-   
-    //   const geojsonLayer = L.geoJSON(FeatureCollection, {
-    //     // Define style for each square
-    //     style: function (feature) {
-    //         // Calculate average value for the square
-    //         const avgValue = calculateAverageValue(feature.properties);
-            
-    //         // Define color based on average value
-    //         const color = getColor(avgValue);
-            
-    //         // Return style object
-    //         return {
-    //             fillColor: color,
-    //             fillOpacity: 0.5,
-    //             weight: 1,
-    //             color: 'black'
-    //         };
-    //     },
-        
-    //     // Create squares as GeoJSON points
-    //     pointToLayer: function (feature, latlng) {
-    //         const size = 1000; // Size of each square (adjust as needed)
-    //         const bounds = L.latLngBounds(latlng, latlng).pad(size / 2);
-    //         return L.rectangle(bounds);
-    //     }
-    // }).addTo(map);
-    
-    // // Function to calculate the average value from properties object
-    // function calculateAverageValue(properties) {
-    //     const propertyValues = Object.values(properties);
-    //     const sum = propertyValues.reduce((acc, val) => acc + val, 0);
-    //     return sum / propertyValues.length;
-    // }
+    L.marker([lat, lon], {icon: mapMarker }).addTo(map).bindPopup('Your Location.');
+// Iterate over each dictionary in the array
+if (useableData && Array.isArray(useableData)) {
+  // Iterate over each dictionary in the array
+  for (var i = 0; i < useableData.length; i++) {
+      var dataPoint = useableData[i];
+      var latitude = dataPoint.latitude; // Access latitude from the dictionary
+      var longitude = dataPoint.longitude; // Access longitude from the dictionary
+
+      // Create a marker at the coordinates of the data point
+      var marker = L.marker([latitude, longitude]).addTo(map);
+
+      // Customize the marker based on the data attributes
+      // You can customize the popup content according to your data structure
+      var popupContent = '<b>Data Point</b>:<br>';
+      for (var key in dataPoint) {
+          if (dataPoint.hasOwnProperty(key) && key !== 'latitude' && key !== 'longitude') {
+              popupContent += `<b>${key}</b>: ${dataPoint[key]}<br>`;
+          }
+      }
+      marker.bindPopup(popupContent);
+  }
+}
+
 
     // // Function to assign colors based on values
     function getColor(value) {
@@ -341,7 +333,15 @@ const getZipCodesForSquares = async (coords) => {
   const responseData = Disease({ requestData });
 
   let useableData = JSON.parse(responseData);
+  const headers = ['All Teeth Lost', 'Annual Checkup', 'Any Disability', 'Arthritis', 'Binge Drinking', 'COPD', 'Cancer (except skin)', 'Cervical Cancer Screening', 'Cholesterol Screening', 'Chronic Kidney Disease', 'Cognitive Disability', 'Colorectal Cancer Screening', 'Core preventive services for older men', 'Core preventive services for older women', 'Coronary Heart Disease', 'Current Asthma', 'Current Smoking', 'Dental Visit', 'Depression', 'Diabetes', 'General Health', 'Health Insurance', 'Hearing Disability', 'High Blood Pressure', 'High Cholesterol', 'Independent Living Disability', 'Mammography', 'Mental Health', 'Mobility Disability', 'Obesity', 'Physical Health', 'Physical Inactivity', 'Self-care Disability', 'Sleep <7 hours', 'Stroke', 'Taking BP Medication', 'Vision Disability', 'longitude', 'latitude'];
   console.log("Data: ", useableData);
+  const [selectedOption, setSelectedOption] = useState('');
+  console.log(selectedOption)
+
+  // Event handler for selecting an option
+  const handleSelectChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
 
   // console.log(requestData);
   return (
@@ -358,10 +358,18 @@ const getZipCodesForSquares = async (coords) => {
 
         {/* Render LeafletMap component */}
         {/* <br></br> */}
+        <select className="scrollable-select" value={selectedOption} onChange={handleSelectChange}>
+          <option value="">Select an option</option>
+          {headers.map((header, index) => (
+            <option key={index} value={header}>{header}</option>
+          ))}
+        </select>
         <Container className="w-75 align-items-start" >
           <LeafletMap 
             lat={latitude} lon={longitude} />
         </Container>
+      
+        
       <div>
         <Disease requestData={zipCode}/>
         <CrimeListComponent crimeData={crimeData}/>
@@ -370,10 +378,3 @@ const getZipCodesForSquares = async (coords) => {
   );
 
 }
-
-
-// DAD6D6
-// 92BFB1
-// 4A6D7C
-// 001400
-// 475657
