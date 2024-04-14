@@ -249,8 +249,8 @@ const getZipCodesForSquares = async (coords) => {
 
   const responseData = Disease({ requestData });
 
-  // Access responseData here and use it as needed
-  console.log("Respondse", responseData[0]);
+  let useableData = JSON.parse(responseData);
+  console.log("Data: ", useableData);
 
   // console.log(requestData);
   return (

@@ -63,6 +63,7 @@ def filter_data():
         filtered_data_json = filtered_df.to_json(orient='records')
 
         return jsonify(filtered_data_json)
+        # return filtered_data_json
 
     except Exception as e:
         return jsonify({'error': str(e)})
