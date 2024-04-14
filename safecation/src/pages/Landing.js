@@ -351,7 +351,15 @@ if (useableData && Array.isArray(useableData)) {
   const responseData = Disease({ requestData });
 
   let useableData = JSON.parse(responseData);
+  const headers = ['All Teeth Lost', 'Annual Checkup', 'Any Disability', 'Arthritis', 'Binge Drinking', 'COPD', 'Cancer (except skin)', 'Cervical Cancer Screening', 'Cholesterol Screening', 'Chronic Kidney Disease', 'Cognitive Disability', 'Colorectal Cancer Screening', 'Core preventive services for older men', 'Core preventive services for older women', 'Coronary Heart Disease', 'Current Asthma', 'Current Smoking', 'Dental Visit', 'Depression', 'Diabetes', 'General Health', 'Health Insurance', 'Hearing Disability', 'High Blood Pressure', 'High Cholesterol', 'Independent Living Disability', 'Mammography', 'Mental Health', 'Mobility Disability', 'Obesity', 'Physical Health', 'Physical Inactivity', 'Self-care Disability', 'Sleep <7 hours', 'Stroke', 'Taking BP Medication', 'Vision Disability', 'longitude', 'latitude'];
   console.log("Data: ", useableData);
+  const [selectedOption, setSelectedOption] = useState('');
+  console.log(selectedOption)
+
+  // Event handler for selecting an option
+  const handleSelectChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
 
   // console.log(requestData);
   return (
@@ -368,10 +376,18 @@ if (useableData && Array.isArray(useableData)) {
 
         {/* Render LeafletMap component */}
         {/* <br></br> */}
+        <select className="scrollable-select" value={selectedOption} onChange={handleSelectChange}>
+          <option value="">Select an option</option>
+          {headers.map((header, index) => (
+            <option key={index} value={header}>{header}</option>
+          ))}
+        </select>
         <Container className="w-75 align-items-start" >
           <LeafletMap 
             lat={latitude} lon={longitude} />
         </Container>
+      
+        
       <div>
         <Disease requestData={zipCode}/>
         <CrimeListComponent crimeData={crimeData}/>
@@ -380,10 +396,3 @@ if (useableData && Array.isArray(useableData)) {
   );
 
 }
-
-
-// DAD6D6
-// 92BFB1
-// 4A6D7C
-// 001400
-// 475657
