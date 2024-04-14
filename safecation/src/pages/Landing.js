@@ -6,7 +6,7 @@ import Header from '../components/Header';
 import 'leaflet/dist/leaflet.css';
 import Disease from '../request';
 import CrimeListComponent from './crimelist'; 
-
+import ChatComponent from "./ChatBot";
 
 
 export default function Landing() {
@@ -407,7 +407,7 @@ function determineLevel(value) {
           <LeafletMap 
             lat={latitude} lon={longitude} />
         </Container>
-      
+        <ChatComponent/>   
         
       <div>
         <Disease requestData={zipCode}/>
