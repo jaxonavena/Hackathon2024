@@ -1,5 +1,5 @@
 import React from 'react';
-import { FixedSizeList } from 'react-window';
+
 import crimeData from './Landing';
 import './crimelist.css';
 
@@ -22,7 +22,7 @@ function CrimeListComponent({ crimeData }) {
     return parts.reduce((acc, curr) => {
 
       const [key, value] = curr.split(': '); // Split each key-value pair by ': ' to get key and value
-      if (key !== "0"){
+      if (key !== "0" ){
         acc[key.trim()] = value.trim();
         return acc;
       } else {
@@ -35,6 +35,7 @@ function CrimeListComponent({ crimeData }) {
   return (
     <div className="crime-data-container">
       <h2 className="crime-data-heading">Crime Data</h2>
+      <h3 className='units'>Crime Rates per 1000 residents</h3>
       <ul className="crime-list">
         {parsedData.map((crime, index) => (
           <li key={index} className="crime-item">

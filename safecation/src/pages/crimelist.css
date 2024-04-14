@@ -9,6 +9,12 @@
     text-align: center;
     margin-bottom: 20px;
   }
+
+  .units {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 10pts;
+  }
   
   .crime-list {
     list-style-type: none;
@@ -30,4 +36,5 @@
   .crime-detail-item {
     margin-bottom: 5px;
   }
+
   
