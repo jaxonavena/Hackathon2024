@@ -47,7 +47,7 @@ export default function Landing() {
     }).setView([lat, lon], 16);
 
       const mapMarker = L.icon({
-        iconUrl: '../../public/map-marker-svgrepo-com.svg',
+        iconUrl: '../../../map-marker-svgrepo-com.svg',
         // iconUrl: '../../public/map.png',
         iconSize: [32, 32], // size of the icon
         iconAnchor: [16, 32], // point of the icon which will correspond to marker's location
@@ -96,23 +96,23 @@ const assignColorsToSquares = (lat, lng) => {
 };
 
 // Inside your loop:
-for (var i = 0; i < 10; i++) {
-  for (var j = 0; j < 10; j++) {
-    var swLat = lat + (i - 5) * smallerSideInDegrees;
-    var swLng = lon + (j - 5) * smallerSideInDegrees;
-    var neLat = swLat + smallerSideInDegrees;
-    var neLng = swLng + smallerSideInDegrees;
+// for (var i = 0; i < 10; i++) {
+//   for (var j = 0; j < 10; j++) {
+//     var swLat = lat + (i - 5) * smallerSideInDegrees;
+//     var swLng = lon + (j - 5) * smallerSideInDegrees;
+//     var neLat = swLat + smallerSideInDegrees;
+//     var neLng = swLng + smallerSideInDegrees;
 
-    var tempLat = (swLat + neLat) / 2;
-    var tempLng = (swLng + neLng) / 2;
+//     var tempLat = (swLat + neLat) / 2;
+//     var tempLng = (swLng + neLng) / 2;
 
-    coords.push(`${tempLat},${tempLng}`);
+//     coords.push(`${tempLat},${tempLng}`);
 
-    var smallerBounds = L.latLngBounds(L.latLng(swLat, swLng), L.latLng(neLat, neLng));
-    var color = assignColorsToSquares(tempLat, tempLng)[i * 10 + j]; // Get color for current square
-    L.rectangle(smallerBounds, { color: color, fillOpacity: 0.5 }).addTo(map);
-  }
-}
+//     var smallerBounds = L.latLngBounds(L.latLng(swLat, swLng), L.latLng(neLat, neLng));
+//     var color = assignColorsToSquares(tempLat, tempLng)[i * 10 + j]; // Get color for current square
+//     L.rectangle(smallerBounds, { color: color, fillOpacity: 0.5 }).addTo(map);
+//   }
+// }
 
 
 
@@ -131,40 +131,27 @@ const getZipCodesForSquares = async (coords) => {
 }
 
   //   // FIXME: not working
-    L.marker([lat, lon], {icon: mapMarker }).addTo(map).bindPopup('Your pin');
-   
-    //   const geojsonLayer = L.geoJSON(FeatureCollection, {
-    //     // Define style for each square
-    //     style: function (feature) {
-    //         // Calculate average value for the square
-    //         const avgValue = calculateAverageValue(feature.properties);
-            
-    //         // Define color based on average value
-    //         const color = getColor(avgValue);
-            
-    //         // Return style object
-    //         return {
-    //             fillColor: color,
-    //             fillOpacity: 0.5,
-    //             weight: 1,
-    //             color: 'black'
-    //         };
-    //     },
-        
-    //     // Create squares as GeoJSON points
-    //     pointToLayer: function (feature, latlng) {
-    //         const size = 1000; // Size of each square (adjust as needed)
-    //         const bounds = L.latLngBounds(latlng, latlng).pad(size / 2);
-    //         return L.rectangle(bounds);
-    //     }
-    // }).addTo(map);
-    
-    // // Function to calculate the average value from properties object
-    // function calculateAverageValue(properties) {
-    //     const propertyValues = Object.values(properties);
-    //     const sum = propertyValues.reduce((acc, val) => acc + val, 0);
-    //     return sum / propertyValues.length;
-    // }
+    L.marker([lat, lon], {icon: mapMarker }).addTo(map).bindPopup('Your Location.');
+// Iterate over each dictionary in the array
+for (var i = 0; i < useableData.length; i++) {
+  var dataPoint = useableData[i];
+  var latitude = dataPoint.latitude; // Access latitude from the dictionary
+  var longitude = dataPoint.longitude; // Access longitude from the dictionary
+
+  // Create a marker at the coordinates of the data point
+  var marker = L.marker([latitude, longitude]).addTo(map);
+
+  // Customize the marker based on the data attributes
+  // You can customize the popup content according to your data structure
+  var popupContent = '<b>Data Point</b>:<br>';
+  for (var key in dataPoint) {
+      if (dataPoint.hasOwnProperty(key) && key !== 'latitude' && key !== 'longitude') {
+          popupContent += `<b>${key}</b>: ${dataPoint[key]}<br>`;
+      }
+  }
+  marker.bindPopup(popupContent);
+}
+
 
     // // Function to assign colors based on values
     function getColor(value) {
