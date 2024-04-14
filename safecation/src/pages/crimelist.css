@@ -1,0 +1,33 @@
+.crime-data-container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #4A6D7C;
+    border-radius: 5px;
+  }
+  
+  .crime-data-heading {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .crime-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .crime-item {
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    background-color: #fff;
+  }
+  
+  .crime-details {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .crime-detail-item {
+    margin-bottom: 5px;
+  }
+  
