@@ -245,7 +245,8 @@ const getZipCodesForSquares = async (coords) => {
       setError(error.message);
     }
   }
-
+  let requestData = [latitude, longitude];
+  // console.log(requestData);
   return (
 <Container className="landing-container bg-dark vh-100 p-4" fluid>
       <h1 className="header mh-25">Safecation</h1>
@@ -265,7 +266,7 @@ const getZipCodesForSquares = async (coords) => {
             lat={latitude} lon={longitude} />
         </Container>
       <div>
-        <Disease requestData={zipCode}/>
+        <Disease requestData={requestData}/>
       </div>
     </Container>
   );
