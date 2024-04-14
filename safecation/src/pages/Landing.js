@@ -245,7 +245,14 @@ const getZipCodesForSquares = async (coords) => {
       setError(error.message);
     }
   }
+  let requestData = [latitude, longitude];
 
+  const responseData = Disease({ requestData });
+
+  // Access responseData here and use it as needed
+  console.log("Respondse", responseData[0]);
+
+  // console.log(requestData);
   return (
 <Container className="landing-container bg-dark vh-100 p-4" fluid>
       <h1 className="header mh-25">Safecation</h1>
@@ -264,11 +271,12 @@ const getZipCodesForSquares = async (coords) => {
           <LeafletMap 
             lat={latitude} lon={longitude} />
         </Container>
-      <div>
-        <Disease requestData={zipCode}/>
-      </div>
+      {/* <div>
+        <Disease requestData={requestData}/>
+      </div> */}
     </Container>
   );
+
 }
 
 

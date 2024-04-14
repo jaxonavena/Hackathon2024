@@ -10,11 +10,12 @@ function Disease({ requestData }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ requestData }), // Sending requestData as a string
+        body: JSON.stringify(requestData), // Sending requestData as a string
       });
+      // console.log('Cord: ', requestData);
       const jsonData = await response.json();
       setResponseData(jsonData);
-      console.log('data: ', JSON.stringify(responseData, null, 2))
+      console.log('data: ', JSON.stringify(responseData, null, 2));
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -27,11 +28,7 @@ function Disease({ requestData }) {
     }
   }, [requestData]);
 
-  return (
-    <div>
-      {responseData && <pre>{JSON.stringify(responseData, null, 2)}</pre>}
-    </div>
-  );
+  return JSON.stringify(responseData, null, 2);
 }
 
 export default Disease;
