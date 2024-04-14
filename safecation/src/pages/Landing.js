@@ -6,9 +6,10 @@ import Header from '../components/Header';
 import 'leaflet/dist/leaflet.css';
 import Disease from '../request';
 import CrimeListComponent from './crimelist'; 
+
 import Select from "react-dropdown-select";
 
-
+import ChatComponent from "./ChatBot";
 
 
 
@@ -443,7 +444,7 @@ function determineLevel(value, categoryIndex) {
           <LeafletMap 
             lat={latitude} lon={longitude} />
         </Container>
-      
+        <ChatComponent/>   
         
       <Container>
         <CrimeListComponent crimeData={crimeData}/>
